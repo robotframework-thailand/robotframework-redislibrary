@@ -1,10 +1,10 @@
 # RedisLibrary
 
-`RedisLibrary` is a[Robot Framework](http://www.robotframework.org) test library which provides keywords for manipulating in-memory data stores in[Redis](https://redis.io/)
+`RedisLibrary` is a [Robot Framework](http://www.robotframework.org) test library which provides keywords for manipulating in-memory data stores in [Redis](https://redis.io/)
 
-[Redis](https://redis.io/)is an open-source software project (sponsored by Redis Labs[4]) that implements data structure servers. It is networked, in-memory, and stores keys with optional durability.
+[Redis](https://redis.io/) is an open-source software project (sponsored by Redis Labs[4]) that implements data structure servers. It is networked, in-memory, and stores keys with optional durability.
 
-You can add, get, update and delete your data from Redis.
+You can add, get, update and delete your data from Redis. The keywords are implemented using [redis-py](https://github.com/andymccurdy/redis-py)
 
 # Usage
 
@@ -14,3 +14,21 @@ Install `robotframework-redislibrary` via `pip` command
 pip install -U robotframework-redislibrary
 ```
 
+# Example Test Case
+| *** Settings ***   |                     |                   |                 |
+| ------------------ | ------------------- | ----------------- | --------------- |
+| Library            |  RedisLibrary       |                   |                 |
+| *** Test Cases *** |                     |                   |                 |
+| TestRedisSample    |                     |                   |                 |
+| ${redis_conn}=     | Connect To Redis    | myredis-dev.com   | port=6379       | 
+| ${data}=           | Get From Redis      | ${redis_conn}     | BARCODE\|1234567|
+| ${obj_to_add}=     | Create Dictionary   | name=testFullName |                 |
+| Append To Redis    | ${redis_conn}       | BARCOE\|1234567   | ${object_to_add}|
+
+# Documentation
+For the detail keyword documentation. Go to this following link:
+
+https://nottyo.github.io/robotframework-redislibrary/
+
+# Help & Issues
+Mention me on Twitter [@nottyo](https://twitter.com/nottyo)
