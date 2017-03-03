@@ -12,19 +12,16 @@ requirements = [
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
+    'fakeredis==0.8.2'
 ]
 
-long_description = """RedisLibrary is a Robot Framework keywords for manipulating in-memory data which store in Redis.
-
-    == Redis ==
-    Redis is an open-source software project (sponsored by Redis Labs) that implements data structure servers. It is networked, in-memory, and stores keys with optional durability.
-
-    `resources.robot`
-    | *** Settings *** |
-    | Library          |  RedisLibrary  |
-
-    """
+CLASSIFIERS = """
+Development Status :: 5 - Production/Stable
+License :: Public Domain
+Operating System :: OS Independent
+Programming Language :: Python
+Topic :: Software Development :: Testing
+"""[1:-1]
 
 setup(
     name='robotframework-redislibrary',
@@ -41,20 +38,8 @@ setup(
     include_package_data=True,
     install_requires=requirements,
     zip_safe=False,
-    keywords='robotframework-redislibrary',
-    classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: QA',
-        'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-    ],
+    keywords='robotframework redislibrary redis',
+    classifiers=CLASSIFIERS,
     test_suite='tests',
-    long_description=long_description,
     tests_require=test_requirements
 )

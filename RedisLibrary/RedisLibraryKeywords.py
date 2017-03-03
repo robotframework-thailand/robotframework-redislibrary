@@ -12,7 +12,7 @@ __version__ = VERSION
 class RedisLibraryKeywords(object):
 
     @keyword('Connect To Redis')
-    def connect_to_redis(self, redis_host, redis_port=6379, db=0):
+    def connect_to_redis(self, redis_host, redis_port=6379, db=0): # pragma: no cover
         """Connect to the Redis server.
 
         Arguments:
@@ -126,3 +126,20 @@ class RedisLibraryKeywords(object):
         | Delete From Redis |  ${redis_conn} | BARCODE|1234567890 |
         """
         return redis_conn.delete(key)
+
+    @keyword('Redis Key Should Be Exist')
+    def check_if_key_exits(self, redis_conn, key):
+        """ Keyword will fail if specify key doesn't exist in Redis
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - key: String keyword to find.
+
+        Examples:
+        | ${is_exist}= | Check If Key Exists | ${redis_conn} | BARCODE|1234567890 |
+        """
+        if redis_conn.exists(key) is False:
+            logger.error("Key " + key +" doesn't exist in Redis.")
+            raise AssertionError
+
+
