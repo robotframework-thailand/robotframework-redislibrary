@@ -1,2 +1,5 @@
 robotframework>=3.0
+coverage
+tox
+fakeredis==0.8.2
 redis==2.10.5

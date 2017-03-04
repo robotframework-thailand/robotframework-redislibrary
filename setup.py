@@ -39,7 +39,7 @@ setup(
     install_requires=requirements,
     zip_safe=False,
     keywords='robotframework redislibrary redis',
-    classifiers=CLASSIFIERS,
+    classifiers=CLASSIFIERS.splitlines(),
     test_suite='tests',
     tests_require=test_requirements
 )
