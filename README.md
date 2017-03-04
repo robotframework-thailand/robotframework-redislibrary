@@ -22,6 +22,7 @@ pip install -U robotframework-redislibrary
 | TestRedisSample    |                     |                   |                 |
 | ${redis_conn}=     | Connect To Redis    | myredis-dev.com   | port=6379       | 
 | ${data}=           | Get From Redis      | ${redis_conn}     | BARCODE\|1234567|
+| Should Be Equal As Strings | ${data}     | TestExpectedData  |                 |
 | ${obj_to_add}=     | Create Dictionary   | name=testFullName |                 |
 | Append To Redis    | ${redis_conn}       | BARCOE\|1234567   | ${object_to_add}|
 
