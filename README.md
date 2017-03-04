@@ -1,3 +1,4 @@
+[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/nottyo/robotframework-redislibrary)
 # RedisLibrary
 
 `RedisLibrary` is a [Robot Framework](http://www.robotframework.org) test library which provides keywords for manipulating in-memory data stores in [Redis](https://redis.io/)
