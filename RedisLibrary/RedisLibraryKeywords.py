@@ -19,15 +19,15 @@ class RedisLibraryKeywords(object):
             - redis_host: hostname or IP address of the Redis server.
             - redis_port: Redis port number (default=6379)
             - db: Redis keyspace number (default=0)
-            - password: for authentication required
+            - redis_password: for authentication required
 
         Return redis connection object
 
         Examples:
-        | ${redis_conn}=   | Connect To Redis |  redis-dev.com | 6379 | passwd
+        | ${redis_conn}=   | Connect To Redis |  redis-dev.com | 6379 | password
         """
         try:
-            redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=db,  password=None)
+            redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=db,  password=redis_password)
         except Exception as ex:
             logger.error(str(ex))
             raise Exception(str(ex))
