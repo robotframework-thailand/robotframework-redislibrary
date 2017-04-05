@@ -12,7 +12,7 @@ __version__ = VERSION
 class RedisLibraryKeywords(object):
 
     @keyword('Connect To Redis')
-    def connect_to_redis(self, redis_host, redis_port=6379, db=0, password=None): # pragma: no cover
+    def connect_to_redis(self, redis_host, redis_port=6379, db=0, redis_password=None): # pragma: no cover
         """Connect to the Redis server.
 
         Arguments:
