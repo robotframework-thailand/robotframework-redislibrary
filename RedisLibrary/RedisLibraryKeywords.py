@@ -23,10 +23,10 @@ class RedisLibraryKeywords(object):
         Return redis connection object
 
         Examples:
-        | ${redis_conn}=   | Connect To Redis |  redis-dev.com | 6379 |
+        | ${redis_conn}=   | Connect To Redis |  redis-dev.com | 6379 | passwd
         """
         try:
-            redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=db)
+            redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=db,  password=None)
         except Exception as ex:
             logger.error(str(ex))
             raise Exception(str(ex))
