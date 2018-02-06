@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from RedisLibraryKeywords import RedisLibraryKeywords
-from version import VERSION
+from .RedisLibraryKeywords import RedisLibraryKeywords
+from .version import VERSION
 
 __author__ = 'Traitanit Huangsri'
 __email__ = 'traitanit.hua@gmail.com'

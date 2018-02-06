@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from robot.api import logger
 from robot.api.deco import keyword
-from version import VERSION
+from .version import VERSION
 import redis
 
 __author__ = 'Traitanit Huangsri'

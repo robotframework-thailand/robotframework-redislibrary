@@ -20,12 +20,12 @@ class RedisLibraryTest(unittest.TestCase):
     def test_append_to_redis(self):
         detail_address = {'city': 'Bangkok', 'country': 'Thailand'}
         self.redis.append_to_redis(self.fake_redis, 'detail_address', detail_address)
-        data = self.redis.get_from_redis(self.fake_redis, 'detail_address')
+        data = self.redis.get_from_redis(self.fake_redis, 'detail_address').decode('UTF-8')
         self.assertDictEqual(ast.literal_eval(data), detail_address)
 
     def test_set_to_redis(self):
         self.redis.set_to_redis(self.fake_redis, 'home_address', '2222')
-        data = self.redis.get_from_redis(self.fake_redis, 'home_address')
+        data = self.redis.get_from_redis(self.fake_redis, 'home_address').decode('UTF-8')
         self.assertEqual(data, '2222')
 
     def test_get_ttl(self):
