@@ -8,7 +8,7 @@ requirements = [
     'tox',
     'coverage',
     'robotframework>=3.0',
-    'redis==2.10.5'
+    'redis>=2.10.5'
 ]
 
 test_requirements = [
