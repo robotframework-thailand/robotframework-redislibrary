@@ -61,6 +61,33 @@ class RedisLibraryKeywords(object):
         """
         return redis_conn.get(key)
 
+    @keyword('Get Dictionary From Redis Hash')
+    def get_dict_from_redis_hash(self, redis_conn, name):
+        """ Get cached data from Redis hashes
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - name: Hash name.
+
+        Examples:
+        | ${data}=   | Get From Redis Hash |  ${redis_conn} | HASHNAME |
+        """
+        return redis_conn.hgetall(name)
+
+    @keyword('Get From Redis Hash')
+    def get_from_redis_hash(self, redis_conn, name, key):
+        """ Get cached data from Redis hashes by key
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - name: Hash name.
+            - key: String keyword to find.
+
+        Examples:
+        | ${data}=   | Get From Redis Hash |  ${redis_conn} | HASHNAME | BARCODE|1234567890 |
+        """
+        return redis_conn.hget(name, key)
+
     @keyword('Set To Redis')
     def set_to_redis(self, redis_conn, key, data):
         """ Set data to Redis
