@@ -62,7 +62,7 @@ class RedisLibraryKeywords(object):
         return redis_conn.get(key)
 
     @keyword('Smembers From Redis')
-    def get_from_redis(self, redis_conn, key):
+    def smembers_from_redis(self, redis_conn, key):
         """ Get cached data from Redis
 
         Arguments:
