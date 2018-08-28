@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
+import pkg_resources  # part of setuptools
 from .RedisLibraryKeywords import RedisLibraryKeywords
-from .version import VERSION
 
 __author__ = 'Traitanit Huangsri'
 __email__ = 'traitanit.hua@gmail.com'
-__version__ = VERSION
+__version__ = pkg_resources.require("robotframework-redislibrary")[0].version
 
 
 class RedisLibrary(RedisLibraryKeywords):
