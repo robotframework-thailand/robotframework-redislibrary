@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
 from robot.api import logger
 from robot.api.deco import keyword
-from .version import VERSION
 import redis
 
 __author__ = 'Traitanit Huangsri'
 __email__ = 'traitanit.hua@gmail.com'
-__version__ = VERSION
 
 
 class RedisLibraryKeywords(object):
 
     @keyword('Connect To Redis')
-    def connect_to_redis(self, redis_host, redis_port=6379, db=0): # pragma: no cover
+    def connect_to_redis(self, redis_host, redis_port=6379, db=0):  # pragma: no cover
         """Connect to the Redis server.
 
         Arguments:
@@ -166,7 +164,5 @@ class RedisLibraryKeywords(object):
         | ${is_exist}= | Check If Key Exists | ${redis_conn} | BARCODE|1234567890 |
         """
         if redis_conn.exists(key) is False:
-            logger.error("Key " + key +" doesn't exist in Redis.")
+            logger.error("Key " + key + " doesn't exist in Redis.")
             raise AssertionError
-
-

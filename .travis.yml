@@ -1,8 +1,8 @@
 language: python
 python:
   - "3.6"
-install: "pip install -r requirements.txt"
-script: make clean coverage docs dist
+install: "pip install ."
+script: make clean test coverage docs dist
 deploy:
   provider: pypi
   user: nottyo
