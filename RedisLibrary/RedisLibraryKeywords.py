@@ -59,6 +59,19 @@ class RedisLibraryKeywords(object):
         """
         return redis_conn.get(key)
 
+    @keyword('Get Set From Redis Set')
+    def get_set_from_redis_set(self, redis_conn, key):
+        """ Get cached members from Redis sets
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - key: Set keyword to find.
+
+        Examples:
+        | ${data}=   | Get Set From Redis Set |  ${redis_conn} | BARCODE:12345:67890 |
+        """
+        return redis_conn.smembers(key)
+
     @keyword('Get Dictionary From Redis Hash')
     def get_dict_from_redis_hash(self, redis_conn, name):
         """ Get cached data from Redis hashes
