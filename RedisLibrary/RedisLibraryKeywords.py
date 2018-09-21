@@ -73,34 +73,34 @@ class RedisLibraryKeywords(object):
         return redis_conn.smembers(key)
 
     @keyword('Get Dictionary From Redis Hash')
-    def get_dict_from_redis_hash(self, redis_conn, name):
+    def get_dict_from_redis_hash(self, redis_conn, hash_name):
         """ Get cached data from Redis hashes
 
         Arguments:
             - redis_conn: Redis connection object
-            - name: Hash name.
+            - hash_name: Hash name.
 
         Examples:
-        | ${data}=   | Get From Redis Hash |  ${redis_conn} | HASHNAME |
+        | ${data}=   | Get Dictionary From Redis Hash |  ${redis_conn} | HASHNAME |
         """
-        return redis_conn.hgetall(name)
+        return redis_conn.hgetall(hash_name)
 
     @keyword('Get From Redis Hash')
-    def get_from_redis_hash(self, redis_conn, name, key):
+    def get_from_redis_hash(self, redis_conn, hash_name, key):
         """ Get cached data from Redis hashes by key
 
         Arguments:
             - redis_conn: Redis connection object
-            - name: Hash name.
+            - hash_name: Hash name.
             - key: String keyword to find.
 
         Examples:
         | ${data}=   | Get From Redis Hash |  ${redis_conn} | HASHNAME | BARCODE|1234567890 |
         """
-        return redis_conn.hget(name, key)
+        return redis_conn.hget(hash_name, key)
 
     @keyword('Set To Redis')
-    def set_to_redis(self, redis_conn, key, data):
+    def set_to_redis(self, redis_conn, key, data, expire_time=0):
         """ Set data to Redis
 
         Arguments:
@@ -111,7 +111,21 @@ class RedisLibraryKeywords(object):
         Examples:
         | ${data}=   | Set To Redis |  ${redis_conn} | BARCODE|1234567890 | ${data}  |
         """
-        return redis_conn.set(key, data)
+        return redis_conn.set(key, data, expire_time)
+
+    @keyword('Set To Redis Hash')
+    def set_to_redis_hash(self, redis_conn, hash_name, key, data):
+        """ Set data to Redis within Hash
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - key: String keyword to find.
+            - data: String data
+
+        Examples:
+        | ${data}=   | Set To Redis Hash |  ${redis_conn} | HASHNAME | key | {"name":"Fred","age":25}
+        """
+        return redis_conn.hset(hash_name, key, data)
 
     @keyword('Flush All')
     def flush_all(self, redis_conn):
@@ -152,6 +166,19 @@ class RedisLibraryKeywords(object):
         """
         return redis_conn.ttl(key) / 60
 
+    @keyword('Get Time To Live In Redis Second')
+    def get_time_to_live_in_redis_second(self, redis_conn, key):
+        """ Return time to live in Redis (seconds)
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - key: String keyword to find.
+
+        Examples:
+        | Expire Data From Redis |  ${redis_conn} | BARCODE|1234567890 |
+        """
+        return redis_conn.ttl(key)
+
     @keyword('Delete From Redis')
     def delete_from_redis(self, redis_conn, key):
         """ Delete data from Redis
@@ -165,8 +192,22 @@ class RedisLibraryKeywords(object):
         """
         return redis_conn.delete(key)
 
+    @keyword('Delete From Redis Hash')
+    def delete_from_redis_hash(self,redis_conn, hash_name, key):
+        """Delete ``key`` from hash ``name``
+
+        Arguments:
+            - redis_conn: Redis connection object.
+            - hash_name: Hash keyword to find.
+            - key: String keyword to find.
+
+        Examples:
+        | Delete From Redis Hash |  ${redis_conn} | HASHNAME |  KEY |
+        """
+        return redis_conn.hdel(hash_name, key)
+
     @keyword('Redis Key Should Be Exist')
-    def check_if_key_exits(self, redis_conn, key):
+    def redis_key_should_be_exist(self, redis_conn, key):
         """ Keyword will fail if specify key doesn't exist in Redis
 
         Arguments:
@@ -174,8 +215,54 @@ class RedisLibraryKeywords(object):
             - key: String keyword to find.
 
         Examples:
-        | ${is_exist}= | Check If Key Exists | ${redis_conn} | BARCODE|1234567890 |
+        | ${is_exist}= | Redis Key Should Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
         if redis_conn.exists(key) is False:
-            logger.error("Key " + key + " doesn't exist in Redis.")
+            logger.error("Key: " + key +" doesn't exist in Redis.")
+            raise AssertionError
+
+    @keyword('Redis Key Should Not Be Exist')
+    def redis_key_should_not_be_exist(self, redis_conn, key):
+        """ Keyword will fail if specify key exist in Redis
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - key: String keyword to find.
+
+        Examples:
+        | ${is_exist}= | Redis Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
+        """
+        if redis_conn.exists(key) is True:
+            logger.error("Key: " + key +" exist in Redis.")
+            raise AssertionError
+
+    @keyword('Redis Hash Key Should Be Exist')
+    def redis_hash_key_should_be_exist(self, redis_conn, hash_name, key):
+        """ Keyword will fail if specify hash key doesn't exist in Redis
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - hash_name: Hash name.
+            - key: String keyword to find.
+
+        Examples:
+        | ${is_exist}= | Redis Hash Key Should Be Exist | ${redis_conn} | BARCODE|1234567890 |
+        """
+        if redis_conn.hexists(hash_name, key) is False:
+            logger.error("Hash: " + hash_name + " and Key: " + key +" doesn't exist in Redis.")
+            raise AssertionError
+
+    @keyword('Redis Hash Key Should Not Be Exist')
+    def redis_hash_key_should_not_be_exist(self, redis_conn, hash_name, key):
+        """ Keyword will fail if specify hash key exist in Redis
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - hash_name: Hash name.
+            - key: String keyword to find.
+        Examples:
+        | ${is_exist}= | Redis Hash Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
+        """
+        if redis_conn.hexists(hash_name, key) is True:
+            logger.error("Hash: " + hash_name + " and Key: " + key +" exist in Redis.")
             raise AssertionError
