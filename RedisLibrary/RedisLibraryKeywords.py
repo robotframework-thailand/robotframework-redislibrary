@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from robot.api import logger
 from robot.api.deco import keyword
+from robot.libraries.BuiltIn import BuiltIn
+from urllib.parse import urlparse
 import redis
 
 __author__ = 'Traitanit Huangsri'
@@ -10,7 +12,7 @@ __email__ = 'traitanit.hua@gmail.com'
 class RedisLibraryKeywords(object):
 
     @keyword('Connect To Redis')
-    def connect_to_redis(self, redis_host, redis_port=6379, db=0):  # pragma: no cover
+    def connect_to_redis(self, redis_host=None, redis_port=None, redis_db=None,url=None):  # pragma: no cover
         """Connect to the Redis server.
 
         Arguments:
@@ -24,7 +26,13 @@ class RedisLibraryKeywords(object):
         | ${redis_conn}=   | Connect To Redis |  redis-dev.com | 6379 |
         """
         try:
-            redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=db)
+
+            if not (url is None):
+                redis_conn = redis.StrinctRedis.from_url(url,redis_db)
+            else:
+                redis_conn = redis.StrictRedis(redis_host,redis_port, redis_db)
+            
+            
         except Exception as ex:
             logger.error(str(ex))
             raise Exception(str(ex))
