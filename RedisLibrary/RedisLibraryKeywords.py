@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from robot.api import logger
 from robot.api.deco import keyword
-from robot.libraries.BuiltIn import BuiltIn
-from urllib.parse import urlparse
 import redis
 
 __author__ = 'Traitanit Huangsri'
@@ -12,7 +10,7 @@ __email__ = 'traitanit.hua@gmail.com'
 class RedisLibraryKeywords(object):
 
     @keyword('Connect To Redis')
-    def connect_to_redis(self, redis_host=None, redis_port=None, redis_db=None,url=None):  # pragma: no cover
+    def connect_to_redis(self, redis_host=None, redis_port=None, redis_db=None,redis_url=None):  # pragma: no cover
         """Connect to the Redis server.
 
         Arguments:
@@ -27,9 +25,11 @@ class RedisLibraryKeywords(object):
         """
         try:
 
-            if not (url is None):
-                redis_conn = redis.StrinctRedis.from_url(url,redis_db)
+            if not (redis_url is None):
+                logger.info ("Creating Redis Connection using : url=%s " % redis_url)
+                redis_conn = redis.from_url(redis_url,redis_db)
             else:
+                logger.info ("Creating Redis Connection using : Host=%s Port=%s db=%s" % (redis_host,redis_port,redis_db))
                 redis_conn = redis.StrictRedis(redis_host,redis_port, redis_db)
             
             
