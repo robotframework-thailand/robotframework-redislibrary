@@ -10,7 +10,7 @@ __email__ = 'traitanit.hua@gmail.com'
 class RedisLibraryKeywords(object):
 
     @keyword('Connect To Redis')
-    def connect_to_redis(self, redis_host=None, redis_port=None, redis_db=None, redis_url=None):  # pragma: no cover
+    def connect_to_redis(self, redis_host=None, redis_port=6379, redis_db=0, redis_url=None):  # pragma: no cover
         """Connect to the Redis server.
 
         Arguments:
