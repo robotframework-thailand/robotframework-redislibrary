@@ -274,3 +274,18 @@ class RedisLibraryKeywords(object):
         if redis_conn.hexists(hash_name, key) is True:
             logger.error("Hash: " + hash_name + " and Key: " + key +" exist in Redis.")
             raise AssertionError
+
+    @keyword('Redis Key Should Not Be Exist')
+    def check_if_key_not_exists(self, redis_conn, key):
+        """ Keyword will successed if specify key doesn't exist in Redis
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - key: String keyword to find.
+
+        Examples:
+        | ${not_exist}= | Redis Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
+        """
+        if redis_conn.exists(key):
+            logger.error("Key " + key + " exist in Redis.")
+            raise AssertionError
