@@ -56,12 +56,12 @@ class RedisLibraryTest(unittest.TestCase):
         self.assertIsNone(home_address)
         self.assertIsNone(name)
 
-    def test_check_if_key_not_exists(self):
-        self.redis.check_if_key_not_exists(self.fake_redis, 'non_existing_key')
+    def test_key_should_not_exist(self):
+        self.redis.redis_key_should_not_be_exist(self.fake_redis, 'non_existing_key')
 
-    def test_check_if_key_not_exists_with_existing_key(self):
+    def test_key_should_not_exist_with_existing_key(self):
         with self.assertRaises(AssertionError):
-            self.redis.check_if_key_not_exists(self.fake_redis, 'name')
+            self.redis.redis_key_should_not_be_exist(self.fake_redis, 'name')
 
     def tearDown(self):
         self.fake_redis.flushall()
