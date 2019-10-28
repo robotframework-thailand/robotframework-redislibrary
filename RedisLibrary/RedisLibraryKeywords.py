@@ -12,21 +12,23 @@ __version__ = VERSION
 class RedisLibraryKeywords(object):
 
     @keyword('Connect To Redis')
-    def connect_to_redis(self, redis_host, redis_port=6379, db=0): # pragma: no cover
+    def connect_to_redis(self, redis_host, redis_port=6379, db=0, redis_password=None): # pragma: no cover
         """Connect to the Redis server.
 
         Arguments:
             - redis_host: hostname or IP address of the Redis server.
             - redis_port: Redis port number (default=6379)
             - db: Redis keyspace number (default=0)
+            - redis_password: password for Redis authentication
 
         Return redis connection object
 
         Examples:
-        | ${redis_conn}=   | Connect To Redis |  redis-dev.com | 6379 |
+        | ${redis_conn}=   | Connect To Redis |  redis-dev.com | 6379 | password |
         """
         try:
-            redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=db)
+            redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=db,
+                                           password=redis_password)
         except Exception as ex:
             logger.error(str(ex))
             raise Exception(str(ex))
