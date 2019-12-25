@@ -110,13 +110,14 @@ class RedisLibraryKeywords(object):
         return redis_conn.hget(hash_name, key)
 
     @keyword('Set To Redis')
-    def set_to_redis(self, redis_conn, key, data, expire_time=0):
+    def set_to_redis(self, redis_conn, key, data, expire_time=3600):
         """ Set data to Redis
 
         Arguments:
             - redis_conn: Redis connection object
             - key: String keyword to find.
             - data: String data
+            - expire_time: TTL default value is 3600s
 
         Examples:
         | ${data}=   | Set To Redis |  ${redis_conn} | BARCODE|1234567890 | ${data}  |
@@ -129,8 +130,10 @@ class RedisLibraryKeywords(object):
 
         Arguments:
             - redis_conn: Redis connection object
+            - hash_name: String hash
             - key: String keyword to find.
             - data: String data
+            - expire_time: TTL default value is 3600s
 
         Examples:
         | ${data}=   | Set To Redis Hash |  ${redis_conn} | HASHNAME | key | {"name":"Fred","age":25}
