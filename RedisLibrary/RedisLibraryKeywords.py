@@ -227,7 +227,7 @@ class RedisLibraryKeywords(object):
         Examples:
         | ${is_exist}= | Redis Key Should Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
-        if redis_conn.exists(key) is False:
+        if not redis_conn.exists(key):
             logger.error("Key: " + key + " doesn't exist in Redis.")
             raise AssertionError
 
@@ -242,10 +242,10 @@ class RedisLibraryKeywords(object):
         Examples:
         | ${is_exist}= | Redis Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
-        if redis_conn.exists(key) is True:
+        if redis_conn.exists(key):
             logger.error("Key: " + key +" exist in Redis.")
             raise AssertionError
-
+    
     @keyword('Redis Hash Key Should Be Exist')
     def redis_hash_key_should_be_exist(self, redis_conn, hash_name, key):
         """ Keyword will fail if specify hash key doesn't exist in Redis
@@ -258,7 +258,7 @@ class RedisLibraryKeywords(object):
         Examples:
         | ${is_exist}= | Redis Hash Key Should Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
-        if redis_conn.hexists(hash_name, key) is False:
+        if not redis_conn.hexists(hash_name, key):
             logger.error("Hash: " + hash_name + " and Key: " +
                          key + " doesn't exist in Redis.")
             raise AssertionError
@@ -274,7 +274,7 @@ class RedisLibraryKeywords(object):
         Examples:
         | ${is_exist}= | Redis Hash Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
-        if redis_conn.hexists(hash_name, key) is True:
+        if redis_conn.hexists(hash_name, key):
             logger.error("Hash: " + hash_name + " and Key: " +
                          key + " exist in Redis.")
             raise AssertionError
