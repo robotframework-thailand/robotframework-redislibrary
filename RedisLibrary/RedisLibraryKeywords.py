@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
 from robot.api import logger
 from robot.api.deco import keyword
-from .version import VERSION
 import redis
 
 __author__ = 'Traitanit Huangsri'
 __email__ = 'traitanit.hua@gmail.com'
-__version__ = VERSION
 
 
 class RedisLibraryKeywords(object):
 
     @keyword('Connect To Redis')
-    def connect_to_redis(self, redis_host, redis_port=6379, db=0): # pragma: no cover
+    def connect_to_redis(self, redis_host=None, redis_port=6379, db=0, redis_url=None):  # pragma: no cover
         """Connect to the Redis server.
 
         Arguments:
@@ -26,7 +24,17 @@ class RedisLibraryKeywords(object):
         | ${redis_conn}=   | Connect To Redis |  redis-dev.com | 6379 |
         """
         try:
-            redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=db)
+
+            if not (redis_url is None):
+                logger.info(
+                    "Creating Redis Connection using : url=%s " % redis_url)
+                redis_conn = redis.from_url(redis_url, db)
+            else:
+                logger.info("Creating Redis Connection using : Host=%s Port=%s db=%s" % (
+                    redis_host, redis_port, db))
+                redis_conn = redis.StrictRedis(
+                    redis_host, redis_port, db)
+
         except Exception as ex:
             logger.error(str(ex))
             raise Exception(str(ex))
@@ -60,6 +68,19 @@ class RedisLibraryKeywords(object):
         | ${data}=   | Get From Redis |  ${redis_conn} | BARCODE|1234567890 |
         """
         return redis_conn.get(key)
+
+    @keyword('Get Set From Redis Set')
+    def get_set_from_redis_set(self, redis_conn, key):
+        """ Get cached members from Redis sets
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - key: Set keyword to find.
+
+        Examples:
+        | ${data}=   | Get Set From Redis Set |  ${redis_conn} | BARCODE:12345:67890 |
+        """
+        return redis_conn.smembers(key)
 
     @keyword('Get Dictionary From Redis Hash')
     def get_dict_from_redis_hash(self, redis_conn, hash_name):
@@ -182,7 +203,7 @@ class RedisLibraryKeywords(object):
         return redis_conn.delete(key)
 
     @keyword('Delete From Redis Hash')
-    def delete_from_redis_hash(self,redis_conn, hash_name, key):
+    def delete_from_redis_hash(self, redis_conn, hash_name, key):
         """Delete ``key`` from hash ``name``
 
         Arguments:
@@ -207,7 +228,7 @@ class RedisLibraryKeywords(object):
         | ${is_exist}= | Redis Key Should Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
         if redis_conn.exists(key) is False:
-            logger.error("Key: " + key +" doesn't exist in Redis.")
+            logger.error("Key: " + key + " doesn't exist in Redis.")
             raise AssertionError
 
     @keyword('Redis Key Should Not Be Exist')
@@ -238,7 +259,8 @@ class RedisLibraryKeywords(object):
         | ${is_exist}= | Redis Hash Key Should Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
         if redis_conn.hexists(hash_name, key) is False:
-            logger.error("Hash: " + hash_name + " and Key: " + key +" doesn't exist in Redis.")
+            logger.error("Hash: " + hash_name + " and Key: " +
+                         key + " doesn't exist in Redis.")
             raise AssertionError
 
     @keyword('Redis Hash Key Should Not Be Exist')
@@ -253,20 +275,6 @@ class RedisLibraryKeywords(object):
         | ${is_exist}= | Redis Hash Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
         if redis_conn.hexists(hash_name, key) is True:
-            logger.error("Hash: " + hash_name + " and Key: " + key +" exist in Redis.")
-            raise AssertionError
-
-    @keyword('Redis Key Should Not Be Exist')
-    def check_if_key_not_exists(self, redis_conn, key):
-        """ Keyword will successed if specify key doesn't exist in Redis
-
-        Arguments:
-            - redis_conn: Redis connection object
-            - key: String keyword to find.
-
-        Examples:
-        | ${not_exist}= | Redis Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
-        """
-        if redis_conn.exists(key):
-            logger.error("Key " + key + " exist in Redis.")
+            logger.error("Hash: " + hash_name + " and Key: " +
+                         key + " exist in Redis.")
             raise AssertionError
