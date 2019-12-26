@@ -10,7 +10,7 @@ __email__ = 'traitanit.hua@gmail.com'
 class RedisLibraryKeywords(object):
 
     @keyword('Connect To Redis')
-    def connect_to_redis(self, redis_host, redis_port=6379, db=0, redis_password=None): # pragma: no cover
+    def connect_to_redis(self, redis_host, redis_port=6379, db=0, redis_password=None, ssl=False, ssl_ca_certs=None): # pragma: no cover
         """Connect to the Redis server.
 
         Arguments:
@@ -18,6 +18,8 @@ class RedisLibraryKeywords(object):
             - redis_port: Redis port number (default=6379)
             - db: Redis keyspace number (default=0)
             - redis_password: password for Redis authentication
+            - ssl: Connect Redis with SSL or not (default is False)
+            - ssl_ca_certs: CA Certification when connect Redis with SSL
 
         Return redis connection object
 
@@ -26,7 +28,7 @@ class RedisLibraryKeywords(object):
         """
         try:
             redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=db,
-                                           password=redis_password)
+                                           password=redis_password, ssl=ssl, ssl_ca_certs=ssl_ca_certs)
         except Exception as ex:
             logger.error(str(ex))
             raise Exception(str(ex))
@@ -62,17 +64,17 @@ class RedisLibraryKeywords(object):
         return redis_conn.get(key)
 
     @keyword('Get Set From Redis Set')
-    def get_set_from_redis_set(self, redis_conn, key):
+    def get_set_from_redis_set(self, redis_conn, set_name):
         """ Get cached members from Redis sets
 
         Arguments:
             - redis_conn: Redis connection object
-            - key: Set keyword to find.
+            - set_name: Set name to find.
 
         Examples:
         | ${data}=   | Get Set From Redis Set |  ${redis_conn} | BARCODE:12345:67890 |
         """
-        return redis_conn.smembers(key)
+        return redis_conn.smembers(set_name)
 
     @keyword('Get Dictionary From Redis Hash')
     def get_dict_from_redis_hash(self, redis_conn, hash_name):
@@ -240,7 +242,7 @@ class RedisLibraryKeywords(object):
         if redis_conn.exists(key):
             logger.error("Key: " + key +" exist in Redis.")
             raise AssertionError
-    
+
     @keyword('Redis Hash Key Should Be Exist')
     def redis_hash_key_should_be_exist(self, redis_conn, hash_name, key):
         """ Keyword will fail if specify hash key doesn't exist in Redis

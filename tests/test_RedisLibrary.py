@@ -19,7 +19,7 @@ class RedisLibraryTest(unittest.TestCase):
 
     def test_append_to_redis(self):
         detail_address = {'city': 'Bangkok', 'country': 'Thailand'}
-        self.redis.append_to_redis(self.fake_redis, 'detail_address', detail_address)
+        self.redis.append_to_redis(self.fake_redis, 'detail_address', str(detail_address))
         data = self.redis.get_from_redis(self.fake_redis, 'detail_address').decode('UTF-8')
         self.assertDictEqual(ast.literal_eval(data), detail_address)
 
@@ -42,12 +42,12 @@ class RedisLibraryTest(unittest.TestCase):
         home_address = self.redis.get_from_redis(self.fake_redis, 'home_address')
         self.assertIsNone(home_address)
 
-    def test_check_if_key_not_exists(self):
+    def test_redis_key_should_be_exist_success(self):
+        self.redis.redis_key_should_be_exist(self.fake_redis, 'name')
+
+    def test_redis_key_should_be_exist_failed(self):
         with self.assertRaises(AssertionError):
             self.redis.redis_key_should_be_exist(self.fake_redis, 'non_existing_key')
-
-    def test_check_if_key_exists(self):
-        self.redis.redis_key_should_be_exist(self.fake_redis, 'name')
 
     def test_flush_all(self):
         self.redis.flush_all(self.fake_redis)
@@ -56,12 +56,61 @@ class RedisLibraryTest(unittest.TestCase):
         self.assertIsNone(home_address)
         self.assertIsNone(name)
 
-    def test_key_should_not_exist(self):
+    def test_redis_key_should_not_be_exist_success(self):
         self.redis.redis_key_should_not_be_exist(self.fake_redis, 'non_existing_key')
 
-    def test_key_should_not_exist_with_existing_key(self):
+    def test_redis_key_should_not_be_exist_failed(self):
         with self.assertRaises(AssertionError):
             self.redis.redis_key_should_not_be_exist(self.fake_redis, 'name')
+
+    def test_get_set_from_redis_set(self):
+        self.fake_redis.sadd("fruit","banana")
+        self.fake_redis.sadd("fruit","apple")
+        fruit = self.redis.get_set_from_redis_set(self.fake_redis, 'fruit')
+        self.assertEqual(fruit, {b'banana', b'apple'})
+
+    def test_get_time_to_live_in_redis_second(self):
+        self.fake_redis.set('year', '2020', 3600)
+        ttl = self.redis.get_time_to_live_in_redis(self.fake_redis, 'name')
+        self.assertEqual(ttl, 5.0)
+
+    def test_set_to_redis_hash(self):
+        self.redis.set_to_redis_hash(self.fake_redis, '7498d0b2', 'star_01', 'Pluto')
+        self.assertEqual(self.redis.get_from_redis_hash(self.fake_redis, '7498d0b2', 'star_01'), b'Pluto')
+
+    def test_get_dict_from_redis_hash(self):
+        self.redis.set_to_redis_hash(self.fake_redis, '7498d0b2', 'star_01', 'Pluto')
+        self.redis.set_to_redis_hash(self.fake_redis, '7498d0b2', 'star_02', 'Mars')
+        self.assertEqual(self.redis.get_dict_from_redis_hash(self.fake_redis, '7498d0b2'), {b'star_01': b'Pluto', b'star_02': b'Mars'})
+
+    def test_delete_from_redis_hash(self):
+        self.redis.set_to_redis_hash(self.fake_redis, '7498d0b2', 'star_01', 'Pluto')
+        self.redis.delete_from_redis_hash(self.fake_redis, '7498d0b2', 'star_01')
+        home_address = self.redis.get_from_redis_hash(self.fake_redis, '7498d0b2', 'star_01')
+        self.assertIsNone(home_address)
+
+    def test_redis_hash_key_should_be_exist_success(self):
+        self.redis.set_to_redis_hash(self.fake_redis, '7498d0b2', 'star_01', 'Pluto')
+        self.redis.redis_hash_key_should_be_exist(self.fake_redis, '7498d0b2', 'star_01')
+
+    def test_redis_hash_key_should_be_exist_failed_no_key(self):
+        with self.assertRaises(AssertionError):
+            self.redis.redis_hash_key_should_be_exist(self.fake_redis, '7498d0b2', 'non_existing_key')
+
+    def test_redis_hash_key_should_be_exist_failed_no_hash(self):
+        with self.assertRaises(AssertionError):
+            self.redis.redis_hash_key_should_be_exist(self.fake_redis, 'non_hash', 'star_01')
+
+    def test_redis_hash_key_should_not_be_exist_success_no_key(self):
+        self.redis.redis_hash_key_should_not_be_exist(self.fake_redis, '7498d0b2', 'non_existing_key')
+
+    def test_redis_hash_key_should_not_be_exist_success_no_hash(self):
+        self.redis.redis_hash_key_should_not_be_exist(self.fake_redis, 'non_hash', 'star_01')
+
+    def test_redis_hash_key_should_not_be_exist_failed(self):
+        self.redis.set_to_redis_hash(self.fake_redis, '7498d0b2', 'star_01', 'Pluto')
+        with self.assertRaises(AssertionError):
+            self.redis.redis_hash_key_should_not_be_exist(self.fake_redis, '7498d0b2', 'star_01')
 
     def tearDown(self):
         self.fake_redis.flushall()
