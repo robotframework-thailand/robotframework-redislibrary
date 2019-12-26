@@ -120,7 +120,8 @@ class RedisLibraryKeywords(object):
             - expire_time: TTL default value is 3600s
 
         Examples:
-        | ${data}=   | Set To Redis |  ${redis_conn} | BARCODE|1234567890 | ${data}  |
+        | ${data}=   | Set To Redis |  ${redis_conn} | BARCODE|0000000011 | ${data}  |
+        | ${data}=   | Set To Redis |  ${redis_conn} | BARCODE|1234567890 | ${data}  | expire_time=600 |
         """
         return redis_conn.set(key, data, expire_time)
 
@@ -133,10 +134,9 @@ class RedisLibraryKeywords(object):
             - hash_name: String hash
             - key: String keyword to find.
             - data: String data
-            - expire_time: TTL default value is 3600s
 
         Examples:
-        | ${data}=   | Set To Redis Hash |  ${redis_conn} | HASHNAME | key | {"name":"Fred","age":25}
+        | ${data}=   | Set To Redis Hash |  ${redis_conn} | HASHNAME | key | {"name":"Fred","age":25} |
         """
         return redis_conn.hset(hash_name, key, data)
 
