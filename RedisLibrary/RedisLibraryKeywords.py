@@ -10,31 +10,23 @@ __email__ = 'traitanit.hua@gmail.com'
 class RedisLibraryKeywords(object):
 
     @keyword('Connect To Redis')
-    def connect_to_redis(self, redis_host=None, redis_port=6379, db=0, redis_url=None):  # pragma: no cover
+    def connect_to_redis(self, redis_host, redis_port=6379, db=0, redis_password=None): # pragma: no cover
         """Connect to the Redis server.
 
         Arguments:
             - redis_host: hostname or IP address of the Redis server.
             - redis_port: Redis port number (default=6379)
             - db: Redis keyspace number (default=0)
+            - redis_password: password for Redis authentication
 
         Return redis connection object
 
         Examples:
-        | ${redis_conn}=   | Connect To Redis |  redis-dev.com | 6379 |
+        | ${redis_conn}=   | Connect To Redis |  redis-dev.com | 6379 | password |
         """
         try:
-
-            if not (redis_url is None):
-                logger.info(
-                    "Creating Redis Connection using : url=%s " % redis_url)
-                redis_conn = redis.from_url(redis_url, db)
-            else:
-                logger.info("Creating Redis Connection using : Host=%s Port=%s db=%s" % (
-                    redis_host, redis_port, db))
-                redis_conn = redis.StrictRedis(
-                    redis_host, redis_port, db)
-
+            redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=db,
+                                           password=redis_password)
         except Exception as ex:
             logger.error(str(ex))
             raise Exception(str(ex))
