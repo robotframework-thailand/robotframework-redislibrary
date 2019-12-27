@@ -42,7 +42,7 @@ class RedisLibraryKeywords(object):
             - redis_conn: Redis connection object
 
         Examples:
-        | ${data}=   | Flush All |  ${redis_conn} |
+        | Flush All |  ${redis_conn} |
         """
         return redis_conn.flushall()
 
@@ -70,7 +70,7 @@ class RedisLibraryKeywords(object):
             - value: String value.
 
         Examples:
-        | ${data}=   | Append To Redis |  ${redis_conn} | BARCODE|1234567890 | ${data} |
+        | Append To Redis |  ${redis_conn} | BARCODE|1234567890 | ${data} |
 
         """
         return redis_conn.append(key, value)
@@ -86,8 +86,8 @@ class RedisLibraryKeywords(object):
             - expire_time: TTL default value is 3600s
 
         Examples:
-        | ${data}=   | Set To Redis |  ${redis_conn} | BARCODE|0000000011 | ${data}  |
-        | ${data}=   | Set To Redis |  ${redis_conn} | BARCODE|1234567890 | ${data}  | expire_time=600 |
+        | Set To Redis |  ${redis_conn} | BARCODE|0000000011 | ${data}  |
+        | Set To Redis |  ${redis_conn} | BARCODE|1234567890 | ${data}  | expire_time=600 |
         """
         return redis_conn.set(key, data, expire_time)
 
@@ -127,9 +127,13 @@ class RedisLibraryKeywords(object):
             - key: String keyword to find.
 
         Examples:
-        | Expire Data From Redis |  ${redis_conn} | BARCODE|1234567890 |
+        | Get Time To Live In Redis |  ${redis_conn} | BARCODE|1234567890 |
         """
-        return redis_conn.ttl(key) / 60
+        ttl = redis_conn.ttl(key)
+        if ttl > 0:
+            return redis_conn.ttl(key) / 60
+        else:
+            return redis_conn.ttl(key)
 
     @keyword('Get Time To Live In Redis Second')
     def get_time_to_live_in_redis_second(self, redis_conn, key):
@@ -140,7 +144,7 @@ class RedisLibraryKeywords(object):
             - key: String keyword to find.
 
         Examples:
-        | Expire Data From Redis |  ${redis_conn} | BARCODE|1234567890 |
+        | Get Time To Live In Redis Second |  ${redis_conn} | BARCODE|1234567890 |
         """
         return redis_conn.ttl(key)
 
@@ -153,7 +157,7 @@ class RedisLibraryKeywords(object):
             - key: String keyword to find.
 
         Examples:
-        | ${is_exist}= | Redis Key Should Be Exist | ${redis_conn} | BARCODE|1234567890 |
+        | Redis Key Should Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
         if not redis_conn.exists(key):
             logger.error("Key: " + key + " doesn't exist in Redis.")
@@ -168,7 +172,7 @@ class RedisLibraryKeywords(object):
             - key: String keyword to find.
 
         Examples:
-        | ${is_exist}= | Redis Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
+        | Redis Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
         if redis_conn.exists(key):
             logger.error("Key: " + key +" exists in Redis.")
@@ -212,7 +216,7 @@ class RedisLibraryKeywords(object):
             - data: String data
 
         Examples:
-        | ${data}=   | Set To Redis Hash |  ${redis_conn} | HASHNAME | key | value |
+        | Set To Redis Hash |  ${redis_conn} | HASHNAME | key | value |
         """
         return redis_conn.hset(hash_name, key, data)
 
@@ -226,7 +230,7 @@ class RedisLibraryKeywords(object):
             - dict_data: data as dict
 
         Examples:
-        | ${data}=   | Add Hash Map To Redis |  ${redis_conn} | HASHNAME | {"name":"Fred","age":25} |
+        | Add Hash Map To Redis |  ${redis_conn} | HASHNAME | {"name":"Fred","age":25} |
         """
         return redis_conn.hmset(hash_name, dict_data)
 
@@ -254,7 +258,7 @@ class RedisLibraryKeywords(object):
             - key: String keyword to find.
 
         Examples:
-        | ${is_exist}= | Redis Hash Key Should Be Exist | ${redis_conn} | BARCODE|1234567890 |
+        | Redis Hash Key Should Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
         if not redis_conn.hexists(hash_name, key):
             logger.error("Hash: " + hash_name + " and Key: " +
@@ -270,7 +274,7 @@ class RedisLibraryKeywords(object):
             - hash_name: Hash name.
             - key: String keyword to find.
         Examples:
-        | ${is_exist}= | Redis Hash Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
+        | Redis Hash Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
         if redis_conn.hexists(hash_name, key):
             logger.error("Hash: " + hash_name + " and Key: " +
@@ -364,3 +368,137 @@ class RedisLibraryKeywords(object):
         | Delete Set Data In Redis Set |  ${redis_conn} | Fruit | Banana | Orage |
         """
         return redis_conn.srem(set_name, *args)
+
+    @keyword('Push Item To First Index In List Redis')
+    def push_item_to_first_index_in_list_redis(self, redis_conn, list_name, *args):
+        """ Push item to first index in list. If you many arguments, last arguments will be the first item.
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - list_name: List name as key in redis
+            - *args: Item that you need to put in set
+
+        Examples:
+        | Push Item To First Index In List Redis | ${redis_conn} | Country | Germany | Italy | France | Spain |
+        | ${list_items} | Get All Item From List Redis | ${redis_conn} | Country |
+
+        Result from ``Get All Item From List Redis``: [b'Spain', b'France', b'Italy', b'Germany']
+        """
+        return redis_conn.lpush(list_name, *args)
+
+    @keyword('Push Item To Last Index In List Redis')
+    def push_item_to_last_index_in_list_redis(self, redis_conn, list_name, *args):
+        """ Push item to last index in list. If you many arguments, last arguments will be the last item.
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - list_name: List name as key in redis
+            - *args: Item that you need to put in set
+
+        Examples:
+        | Push Item To Last Index In List Redis | ${redis_conn} | Country | Germany | Italy | France | Spain |
+        | ${list_items} | Get All Item From List Redis | ${redis_conn} | Country |
+
+        Result from ``Get All Item From List Redis``: [b'Germany', b'Italy', b'France', b'Spain']
+        """
+        return redis_conn.rpush(list_name, *args)
+
+    @keyword('Update Item In List Redis')
+    def update_item_in_list_redis(self, redis_conn, list_name, index, item):
+        """Update item in list by specific index.
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - list_name: List name as key in redis
+            - index: Index in list that you need to update
+            - item: New item
+
+        Examples:
+        | Update Item In List Redis | ${redis_conn} | Country | 1 | England |
+        """
+        return redis_conn.lset(list_name, index, item)
+
+    @keyword('Get Item From List Redis')
+    def get_item_from_list_redis(self, redis_conn, list_name, index):
+        """Get item in list by specific index.
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - list_name: List name as key in redis
+            - index: Index in list that you need to update
+
+        Examples:
+        | ${item_data} | Get Item From List Redis | ${redis_conn} | Country | 1 |
+        """
+        return redis_conn.lindex(list_name, index)
+
+    @keyword('Get All Item From List Redis')
+    def get_all_item_from_list_redis(self, redis_conn, list_name):
+        """Get all items in list.
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - list_name: List name as key in redis
+
+        Examples:
+        | ${list_items} | Get All Item From List Redis | ${redis_conn} | Country |
+        """
+        return redis_conn.lrange(list_name, 0, -1)
+
+    @keyword('Get Length From List Redis')
+    def get_length_from_list_redis(self, redis_conn, list_name):
+        """Get length of list.
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - list_name: List name as key in redis
+
+        Examples:
+        | ${list_length} | Get Length From List Redis | ${redis_conn} | Country |
+        """
+        return redis_conn.llen(list_name)
+
+    @keyword('Get Index of Item From List Redis')
+    def get_index_of_item_from_list_redis(self, redis_conn, list_name, item):
+        """Get indexs of item that metched in list.
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - list_name: List name as key in redis
+            - item: Search item
+
+        Examples:
+        | ${list_index} | Get Index of Item From List Redis | ${redis_conn} | Country | Germany |
+
+        Keyword will return result as list of index: [0, 1, 5]
+        """
+        return [i for i, j in enumerate(redis_conn.lrange(list_name, 0, -1)) if j == str.encode(item)]
+
+    @keyword('Delete Item From List Redis')
+    def delete_item_from_list_redis(self, redis_conn, list_name, index, item=None):
+        """Delete data from list by specific index.
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - list_name: List name as key in redis
+            - index: Index in list that you need to delete
+            - item: Compare item. If it is None, keyword will not compare with item in index.
+                But if is not None, keyword will compare it with item in index before delete.
+                If not matched keyword will failed.
+
+        Examples 1:
+        | Delete Item From List Redis | ${redis_conn} | Country | 2 |
+
+        Examples 2: keyword will compare it with item in index before delete.
+            If not matched keyword will failed
+        | Delete Item From List Redis | ${redis_conn} | Country | 2 | Spain |
+        """
+        if item is not None:
+            if not redis_conn.lindex(list_name, index) == str.encode(item):
+                logger.error("Item: " + item + " not matched with index item in list.")
+                raise AssertionError
+        redis_conn.lset(list_name, index, 'DELETE_ITEM')
+        redis_conn.lrem(list_name, 1, 'DELETE_ITEM')
+
+
+
