@@ -11,6 +11,7 @@ Change Log: `robotframework-redislibrary`
 - Add keywords for operate with set in redis
 - Add keywords for operate with set in redis
 - Add more unit test and now it cover all keywords.
+- Add keywords 'Connect To Redis From URL'
 
 ## Version 0.3
 
