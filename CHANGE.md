@@ -1,6 +1,18 @@
 Change Log: `robotframework-redislibrary`
 ================================
 
+## Version 1.0.0
+**Date:** 27-Dec-2019
+- Fixed import of redis in setup.py
+- Fixed keyword 'Get Time To Live In Redis' to handle when get TTL as minus value.
+- Remove keyword 'Check If Key Not Exists', please use 'Redis Key Should Not Be Exist'
+- Change default expire_time of 'Set To Redis' keyword to 3600 seconds
+- Keyword 'Connect To Redis' will support password and SSL
+- Add keywords for operate with set in redis
+- Add keywords for operate with set in redis
+- Add more unit test and now it cover all keywords.
+- Add keywords 'Connect To Redis From URL'
+
 ## Version 0.3
 
 **Date:** 31-July-2018

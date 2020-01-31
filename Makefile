@@ -51,6 +51,7 @@ test: ## run tests quickly with the default Python
 		python setup.py test
 
 coverage: ## check code coverage quickly with the default Python
+		pip install coverage
 		coverage run --source RedisLibrary setup.py test
 		coverage report -m
 		coverage html

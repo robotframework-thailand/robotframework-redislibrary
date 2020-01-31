@@ -1,17 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 from setuptools import setup
-from RedisLibrary.version import VERSION
 
-requirements = [
-    'tox',
-    'coverage',
-    'robotframework>=3.0',
-    'redis>=2.10.5'
-]
+
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
+
+def readlines(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).readlines()
+
+
+version = read('VERSION')
+
+requirements = readlines('requirements.txt')
 
 test_requirements = [
+    'tox',
+    'coverage',
     'fakeredis==0.8.2'
 ]
 
@@ -25,7 +33,7 @@ Topic :: Software Development :: Testing
 
 setup(
     name='robotframework-redislibrary',
-    version=VERSION,
+    version=version,
     description="robotframework-redislibrary is a Robot Framework test library for manipulating in-memory data which store in Redis",
     author="Traitanit Huangsri",
     author_email='traitanit.hua@gmail.com',
