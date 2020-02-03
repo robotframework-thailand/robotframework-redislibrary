@@ -11,4 +11,4 @@ deploy:
   on:
     tags: true
     distributions: sdist bdist_wheel
-    repo: nottyo/robotframework-redislibrary
+    repo: robotframework-thailand/robotframework-redislibrary
