@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-import pkg_resources  # part of setuptools
 from .RedisLibraryKeywords import RedisLibraryKeywords
+from .version import VERSION
 
 __author__ = 'Traitanit Huangsri'
 __email__ = 'traitanit.hua@gmail.com'
-__version__ = pkg_resources.require("robotframework-redislibrary")[0].version
 
 
 class RedisLibrary(RedisLibraryKeywords):
@@ -21,12 +20,12 @@ class RedisLibrary(RedisLibraryKeywords):
 
     ``pip install -U robotframework-redislibrary``
 
-    Here is a sample 
+    Here is a sample
 
         | ***** Settings ***** |
         | Library | RedisLibrary |
         | ***** Test Cases ***** |
-		| Get Requests |
+        | Get Requests |
         | | ${redis_conn} | Connect To Redis | ${redis_host} | ${redis_port} | db=${0} |
         | | Set Test Variable | ${redis_key} | 1234567890 |
         | | Set Test Variable | ${redis_data} | {"data":{"message":"Hello Worlds!!!"}} |
@@ -38,9 +37,9 @@ class RedisLibrary(RedisLibraryKeywords):
         | | Redis Key Should Not Be Exist | ${redis_conn} | ${redis_key} |
 
     References:
-    
+
      + Redis-Py Documentation - https://redis-py.readthedocs.io/en/latest/
     """
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
-    ROBOT_LIBRARY_VERSION = __version__
+    ROBOT_LIBRARY_VERSION = VERSION
