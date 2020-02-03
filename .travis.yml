@@ -1,7 +1,7 @@
 language: python
 python:
   - "3.6"
-install: "pip install ."
+install: "pip install -r requirements.txt"
 script: make clean test coverage docs dist
 deploy:
   provider: pypi
