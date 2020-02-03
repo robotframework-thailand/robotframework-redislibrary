@@ -1,21 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-from setuptools import setup
+from setuptools import setup, find_packages
+from os.path import abspath, dirname, join
 
+# Get version
+version_file = join(dirname(abspath(__file__)), 'RedisLibrary', 'version.py')
+with open(version_file) as file:
+    code = compile(file.read(), version_file, 'exec')
+    exec(code)
 
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
-
-
-def readlines(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).readlines()
-
-
-version = read('VERSION')
-
-requirements = readlines('requirements.txt')
+requirements = [
+    'robotframework>=3.0',
+    'redis>=2.10.5'
+]
 
 test_requirements = [
     'tox',
@@ -33,11 +31,11 @@ Topic :: Software Development :: Testing
 
 setup(
     name='robotframework-redislibrary',
-    version=version,
+    version=VERSION,
     description="robotframework-redislibrary is a Robot Framework test library for manipulating in-memory data which store in Redis",
     author="Traitanit Huangsri",
     author_email='traitanit.hua@gmail.com',
-    url='https://github.com/nottyo/robotframework-redislibrary.git',
+    url='https://github.com/robotframework-thailand/robotframework-redislibrary.git',
     packages=[
         'RedisLibrary'
     ],
