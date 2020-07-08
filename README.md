@@ -27,6 +27,7 @@ pip install -U robotframework-redislibrary
 | Should Be Equal As Strings | ${data}     | TestExpectedData  |                 |
 | ${obj_to_add}=     | Create Dictionary   | name=testFullName |                 |
 | Append To Redis    | ${redis_conn}       | BARCOE\|1234567   | ${object_to_add}|
+| @{key_list}=       | Get All Match Keys  | ${redis_conn}     | BARCODE*        |
 
 # Documentation
 For the detail keyword documentation. Go to this following link:

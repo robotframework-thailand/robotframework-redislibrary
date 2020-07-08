@@ -35,6 +35,7 @@ class RedisLibrary(RedisLibraryKeywords):
         | | Redis Key Should Be Exist | ${redis_conn} | ${redis_key} |
         | | Delete From Redis | ${redis_conn} | ${redis_key} |
         | | Redis Key Should Not Be Exist | ${redis_conn} | ${redis_key} |
+        | | @{key_list}= | Get All Match Keys | ${redis_conn} | BARCODE* |
 
     References:
 

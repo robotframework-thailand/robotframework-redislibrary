@@ -495,6 +495,19 @@ class RedisLibraryKeywords(object):
         """
         return [i for i, j in enumerate(redis_conn.lrange(list_name, 0, -1)) if j == str.encode(item)]
 
+    @keyword('Get All Match Keys')
+    def get_all_match_keys(self, redis_conn, key):
+        """ Get all key that matches with specific keyword
+
+        Arguments:
+            - redis_conn: Redis connection object
+            - keyword: String keyword to find may contain wildcard.
+
+        Examples:
+        | @{key_list}=   | Get All Match Keys | ${redis_conn} | BARCODE* |
+        """
+        return redis_conn.keys(key)
+
     @keyword('Delete Item From List Redis')
     def delete_item_from_list_redis(self, redis_conn, list_name, index, item=None):
         """Delete data from list by specific index.
