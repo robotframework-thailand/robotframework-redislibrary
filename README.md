@@ -1,5 +1,5 @@
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/nottyo/robotframework-redislibrary)
-[![Build Status](https://travis-ci.org/nottyo/robotframework-redislibrary.svg?branch=master)](https://travis-ci.org/nottyo/robotframework-redislibrary)
+[![Build Status](https://travis-ci.org/robotframework-thailand/robotframework-redislibrary.svg?branch=master)](https://travis-ci.org/robotframework-thailand/robotframework-redislibrary)
 # RedisLibrary
 
 `RedisLibrary` is a [Robot Framework](http://www.robotframework.org) test library which provides keywords for manipulating in-memory data stores in [Redis](https://redis.io/)
