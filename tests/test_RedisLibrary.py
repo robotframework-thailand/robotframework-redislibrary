@@ -264,6 +264,30 @@ class RedisLibraryTest(unittest.TestCase):
     def test_get_index_of_item_from_list_redis_no_list(self):
         self.assertEqual(self.redis.get_index_of_item_from_list_redis(self.fake_redis, 'Country', 'Germany'), [])
 
+    def test_get_all_match_keys(self):
+        self.fake_redis.set('CountryAsia', 'Thailand', px=300000)
+        self.fake_redis.set('CountryEurope', 'Germany', px=300000)
+        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, '*'), [b'name', b'home_address', b'CountryAsia', b'CountryEurope'])
+
+    def test_get_all_match_keys_with_empty_key(self):
+        self.fake_redis.set('CountryAsia', 'Thailand', px=300000)
+        self.fake_redis.set('CountryEurope', 'Germany', px=300000)
+        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, ''), [b'name', b'home_address', b'CountryAsia', b'CountryEurope'])
+
+    def test_get_all_match_keys_with_wildcard(self):
+        self.fake_redis.set('CountryAsia', 'Thailand', px=300000)
+        self.fake_redis.set('CountryEurope', 'Germany', px=300000)
+        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, 'Country*'), [b'CountryAsia', b'CountryEurope'])
+
+    def test_get_all_match_keys_without_wildcard(self):
+        self.fake_redis.set('CountryAsia', 'Thailand', px=300000)
+        self.fake_redis.set('CountryEurope', 'Germany', px=300000)
+        self.fake_redis.set('CountryAsiaAndEurope', 'Germany', px=300000)
+        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, 'CountryAsia'), [b'CountryAsia'])
+
+    def test_get_all_match_keys_empty_list(self):
+        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, 'Country*'), [])
+
     def test_delete_item_from_list_redis(self):
         self.redis.push_item_to_first_index_in_list_redis(self.fake_redis, 'Country', 'Germany', 'Italy', 'France', 'Spain')
         self.redis.delete_item_from_list_redis(self.fake_redis, 'Country', 2, 'Italy')
