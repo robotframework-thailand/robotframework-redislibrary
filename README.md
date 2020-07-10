@@ -32,7 +32,7 @@ pip install -U robotframework-redislibrary
 # Documentation
 For the detail keyword documentation. Go to this following link:
 
-https://nottyo.github.io/robotframework-redislibrary/
+https://robotframework-thailand.github.io/robotframework-redislibrary/RedisLibrary.html
 
 # Help & Issues
 Mention me on Twitter [@nottyo](https://twitter.com/nottyo)
