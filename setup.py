@@ -29,10 +29,15 @@ Programming Language :: Python
 Topic :: Software Development :: Testing
 """[1:-1]
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name='robotframework-redislibrary',
     version=VERSION,
     description="robotframework-redislibrary is a Robot Framework test library for manipulating in-memory data which store in Redis",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author="Traitanit Huangsri",
     author_email='traitanit.hua@gmail.com',
     url='https://github.com/robotframework-thailand/robotframework-redislibrary.git',
