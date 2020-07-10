@@ -267,17 +267,27 @@ class RedisLibraryTest(unittest.TestCase):
     def test_get_all_match_keys(self):
         self.fake_redis.set('CountryAsia', 'Thailand', px=300000)
         self.fake_redis.set('CountryEurope', 'Germany', px=300000)
-        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, '*'), [b'name', b'home_address', b'CountryAsia', b'CountryEurope'])
+        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, '*'), sorted([b'name', b'home_address', b'CountryAsia', b'CountryEurope']))
+
+    def test_get_all_match_keys_with_count_1(self):
+        self.fake_redis.set('CountryAsia', 'Thailand', px=300000)
+        self.fake_redis.set('CountryEurope', 'Germany', px=300000)
+        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, '*', 1), sorted([b'name', b'home_address', b'CountryAsia', b'CountryEurope'])[:1])
 
     def test_get_all_match_keys_with_empty_key(self):
         self.fake_redis.set('CountryAsia', 'Thailand', px=300000)
         self.fake_redis.set('CountryEurope', 'Germany', px=300000)
-        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, ''), [b'name', b'home_address', b'CountryAsia', b'CountryEurope'])
+        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, ''), sorted([b'name', b'home_address', b'CountryAsia', b'CountryEurope']))
 
     def test_get_all_match_keys_with_wildcard(self):
         self.fake_redis.set('CountryAsia', 'Thailand', px=300000)
         self.fake_redis.set('CountryEurope', 'Germany', px=300000)
-        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, 'Country*'), [b'CountryAsia', b'CountryEurope'])
+        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, 'Country*'), sorted([b'CountryAsia', b'CountryEurope']))
+
+    def test_get_all_match_keys_with_wildcard_and_count_0(self):
+        self.fake_redis.set('CountryAsia', 'Thailand', px=300000)
+        self.fake_redis.set('CountryEurope', 'Germany', px=300000)
+        self.assertEqual(self.redis.get_all_match_keys(self.fake_redis, 'Country*', 0), sorted([b'CountryAsia', b'CountryEurope']))
 
     def test_get_all_match_keys_without_wildcard(self):
         self.fake_redis.set('CountryAsia', 'Thailand', px=300000)
