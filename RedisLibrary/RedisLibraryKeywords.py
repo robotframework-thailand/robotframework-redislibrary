@@ -2,12 +2,36 @@
 from robot.api import logger
 from robot.api.deco import keyword
 import redis
+from redis.sentinel import Sentinel
 
 __author__ = 'Traitanit Huangsri'
 __email__ = 'traitanit.hua@gmail.com'
 
 
 class RedisLibraryKeywords(object):
+
+    @keyword('Get Redis Master')
+    def get_redis_master(self, redis_host, redis_port=26379, service_name=None):
+        """Get from the Redis master's address corresponding.
+
+                Arguments:
+                    - redis_host: hostname or IP address of the Redis server.
+                    - redis_port: Redis port number (default=6379)
+                    - service_name: Redis master's address corresponding
+
+                Return sentinel detail lists
+
+                Examples:
+                | @{sentinel_detail}=   | Get Redis Master |  'redis-dev.com' | 6379 | 'service-name' |
+                """
+        try:
+            sentinel = Sentinel([(redis_host, redis_port)], socket_timeout=0.1)
+            sentinel_detail = sentinel.discover_master(service_name)
+
+        except Exception as ex:
+            logger.error(str(ex))
+            raise Exception(str(ex))
+        return sentinel_detail
 
     @keyword('Connect To Redis')
     def connect_to_redis(self, redis_host, redis_port=6379, db=0, redis_password=None, ssl=False, ssl_ca_certs=None):
@@ -196,7 +220,7 @@ class RedisLibraryKeywords(object):
         | Redis Key Should Not Be Exist | ${redis_conn} | BARCODE|1234567890 |
         """
         if redis_conn.exists(key):
-            logger.error("Key: " + key +" exists in Redis.")
+            logger.error("Key: " + key + " exists in Redis.")
             raise AssertionError
 
     @keyword('Get Dictionary From Redis Hash')
@@ -534,6 +558,3 @@ class RedisLibraryKeywords(object):
                 raise AssertionError
         redis_conn.lset(list_name, index, 'DELETE_ITEM')
         redis_conn.lrem(list_name, 1, 'DELETE_ITEM')
-
-
-
