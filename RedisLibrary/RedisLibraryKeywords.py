@@ -22,7 +22,7 @@ class RedisLibraryKeywords(object):
                 Return cluster detail
 
                 Examples:
-                | @{sentinel_detail}=   | Get Redis Master |  'redis-dev.com' | 6379 |
+                | @{cluster_detail}=   | Get Redis Cluster |  'redis-dev.com' | 6379 |
                 """
         try:
 
