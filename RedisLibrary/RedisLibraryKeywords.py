@@ -3,12 +3,36 @@ from robot.api import logger
 from robot.api.deco import keyword
 import redis
 from redis.sentinel import Sentinel
-
+from redis.cluster import RedisCluster as RedisCluster
+from redis.cluster import ClusterNode
 __author__ = 'Traitanit Huangsri'
 __email__ = 'traitanit.hua@gmail.com'
 
 
 class RedisLibraryKeywords(object):
+
+    @keyword('Get Redis Cluster')
+    def get_redis_cluster(self, redis_host, redis_port=6379):
+        """Get from the Redis master's address corresponding.
+
+                Arguments:
+                    - redis_host: hostname or IP address of the Redis server.
+                    - redis_port: Redis port number (default=6379)
+
+                Return cluster detail
+
+                Examples:
+                | @{sentinel_detail}=   | Get Redis Master |  'redis-dev.com' | 6379 |
+                """
+        try:
+
+            nodes = [ClusterNode(redis_host, redis_port)]
+            redis_cluster = RedisCluster(startup_nodes=nodes)
+
+        except Exception as ex:
+            logger.error(str(ex))
+            raise Exception(str(ex))
+        return redis_cluster
 
     @keyword('Get Redis Master')
     def get_redis_master(self, redis_host, redis_port=26379, service_name=None):
