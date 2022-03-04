@@ -1,5 +1,12 @@
 Change Log: `robotframework-redislibrary`
 ================================
+## Version 1.2.4
+**Date:** 04-Mar-2022
+- add keywords Get Redis Master (Redis Cluster)
+
+## Version 1.2.3
+**Date:** 18-Aug-2021
+- add keywords Get Redis Master (Redis sentinel)
 
 ## Version 1.0.0
 **Date:** 27-Dec-2019
