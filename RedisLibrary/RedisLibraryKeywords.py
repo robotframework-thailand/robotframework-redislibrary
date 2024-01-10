@@ -97,7 +97,7 @@ class RedisLibraryKeywords(object):
         """
         try:
             logger.info("Creating Redis Connection using : url=%s " % redis_url)
-            redis_conn = redis.from_url(redis_url, db)
+            redis_conn = redis.from_url(redis_url, db=db)
         except Exception as ex:
             logger.error(str(ex))
             raise Exception(str(ex))
