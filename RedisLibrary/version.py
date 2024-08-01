@@ -1,4 +1,2 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-VERSION = "0.1"
+# Update this before release
+VERSION = "1.2.5"
