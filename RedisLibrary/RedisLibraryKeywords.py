@@ -58,13 +58,14 @@ class RedisLibraryKeywords(object):
         return sentinel_detail
 
     @keyword('Connect To Redis')
-    def connect_to_redis(self, redis_host, redis_port=6379, db=0, redis_password=None, ssl=False, ssl_ca_certs=None):
+    def connect_to_redis(self, redis_host, redis_port=6379, db=0, redis_password=None, redis_username=None, ssl=False, ssl_ca_certs=None):
         """Connect to the Redis server.
 
         Arguments:
             - redis_host: hostname or IP address of the Redis server.
             - redis_port: Redis port number (default=6379)
             - db: Redis keyspace number (default=0)
+            - redis_username: username for Redis authentication
             - redis_password: password for Redis authentication
             - ssl: Connect Redis with SSL or not (default is False)
             - ssl_ca_certs: CA Certification when connect Redis with SSL
@@ -76,7 +77,7 @@ class RedisLibraryKeywords(object):
         """
         try:
             redis_conn = redis.StrictRedis(host=redis_host, port=redis_port, db=db,
-                                           password=redis_password, ssl=ssl, ssl_ca_certs=ssl_ca_certs)
+                                           username=redis_username, password=redis_password, ssl=ssl, ssl_ca_certs=ssl_ca_certs)
         except Exception as ex:
             logger.error(str(ex))
             raise Exception(str(ex))
