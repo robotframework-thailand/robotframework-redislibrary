@@ -1,5 +1,10 @@
 Change Log: `robotframework-redislibrary`
 ================================
+
+## Version 1.2.6
+**Date:** 01-Oct-2024
+- Update connect_to_redis_from_url https://github.com/robotframework-thailand/robotframework-redislibrary/pull/38
+
 ## Version 1.2.4
 **Date:** 04-Mar-2022
 - add keywords Get Redis Master (Redis Cluster)
