@@ -1,6 +1,10 @@
 Change Log: `robotframework-redislibrary`
 ================================
 
+## Version 1.2.7
+**Date:** 01-Oct-2024
+- Update travis python 3.7 to 3.9
+
 ## Version 1.2.6
 **Date:** 01-Oct-2024
 - Update connect_to_redis_from_url https://github.com/robotframework-thailand/robotframework-redislibrary/pull/38
