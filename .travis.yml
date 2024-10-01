@@ -6,6 +6,7 @@ script: make clean test coverage docs dist
 deploy:
   provider: pypi
   user: nottyo
+  skip_cleanup: true
   password:
     secure: J3bcyW+HyB+ycBn71elapBrD+UDhlHIdsVs1YT4WB34bfqNIzVMwvBN6utr4ZcYD7k/t4fZoKbP4D7wo3WE2FgWkLQzNyZcj0OUDmKR7ZJKUmH+xQYPPw0zUzxuFg1ceK5d3fG/DhKR/YNQyb+fvVazSg+YK1/GuOOeExWjmAdM6YB15pG0vW21ktZP7645kldv/TQFrR8YORO0VL2VFBNvgzO1P+eLNTjNaEzLO0nWRKDoPkNEI9r5S2R+lodsZI/fcMWD4w8CRSt8UyVe1nj714xB/YVspYgXYNNMJLXfx4WNWx2vQghmHuf9qN8oxGkYGKJ0tt+gGcDt3MebIdAkvtY4kxoUUNHE09zoKfWutB6J7i4lk5R/6/Sg5DUk5BEIJ/UmuEJuFEYzUzLqylV49nr0buT/jaZKddiJWSrNmXfK2ObhSxkaI6xq6SZRIXory+vBiPMJKuuZs48Ks5PdV4n3EQx46cotwUCyRXJMLpkhsisdvBBuMfvP2oGdCLCJnyC88ImQGRbf+GgIEBzptgxo0mOgE+36Bg8rlt9aczUmDYqntqxob78ISBFoVYiqMVVkeYUWelqfVAkIJIpykhSg/A3e3ZF74jpk67wvD+c5vkAAYyHas21oq6GKFJARXrA74HC3C1gKtd3ov6scVG02czKYBjrHffvCusGo=
   on:
