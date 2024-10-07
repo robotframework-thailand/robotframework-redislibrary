@@ -1,10 +1,15 @@
 language: python
 python:
   - "3.9"
-install: "pip install -r requirements.txt"
+install: 
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+  - pip install urllib3==1.26.15 setuptools==70.0.0 twine==5.1.1  #install package for deploy
 script: make clean test coverage docs dist
 deploy:
   provider: pypi
+  edge:
+    branch: v1.8.45
   user: nottyo
   skip_cleanup: true
   password:
