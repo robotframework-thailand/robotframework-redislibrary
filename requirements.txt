@@ -1,2 +1,2 @@
 robotframework>=3.0
-redis==4.1.0
+redis==4.4.4
