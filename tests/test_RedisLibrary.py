@@ -2,7 +2,7 @@
 
 __author__ = 'Traitanit Huangsri'
 __email__ = 'traitanit.hua@gmail.com'
-
+from unittest.mock import MagicMock, patch
 from RedisLibrary import RedisLibrary
 import unittest, fakeredis, ast
 
@@ -314,6 +314,11 @@ class RedisLibraryTest(unittest.TestCase):
         self.redis.push_item_to_first_index_in_list_redis(self.fake_redis, 'Country', 'Germany', 'Italy', 'France', 'Spain')
         with self.assertRaises(AssertionError):
             self.redis.delete_item_from_list_redis(self.fake_redis, 'Country', 2, 'Spain')
+
+    def test_disconnect_from_redis(self):
+        self.fake_redis.close = MagicMock()
+        self.assertIsNone(self.redis.disconnect_from_redis(self.fake_redis))
+        self.fake_redis.close.assert_called_once()
 
     def tearDown(self):
         self.fake_redis.flushall()

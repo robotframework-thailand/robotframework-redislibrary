@@ -582,3 +582,20 @@ class RedisLibraryKeywords(object):
                 raise AssertionError
         redis_conn.lset(list_name, index, 'DELETE_ITEM')
         redis_conn.lrem(list_name, 1, 'DELETE_ITEM')
+
+    @keyword('Disconnect from Redis')
+    def disconnect_from_redis(self, redis_conn):
+        """Securely disconnect from Redis database.
+
+        Arguments:
+        - redis_conn: Redis connection object
+
+        Examples:
+        | Disconnect from Redis | ${redis_conn} |
+        """
+        try:
+            redis_conn.close()
+            logger.info("Disconnection successful")
+        except Exception as ex:
+            logger.error(f"Failed to disconnect: {ex}")
+            raise Exception(str(ex))
