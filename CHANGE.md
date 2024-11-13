@@ -1,6 +1,10 @@
 Change Log: `robotframework-redislibrary`
 ================================
 
+## Version 1.2.8
+**Date:** 13-Nov-2024
+- allow override param ssl_cert_reqs to Connect To Redis keyword
+
 ## Version 1.2.7
 **Date:** 01-Oct-2024
 - Update travis python 3.7 to 3.9
