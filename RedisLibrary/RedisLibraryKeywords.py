@@ -59,7 +59,7 @@ class RedisLibraryKeywords(object):
 
     @keyword('Connect To Redis')
     def connect_to_redis(self, redis_host, redis_port=6379, db=0, redis_password=None, ssl=False, ssl_ca_certs=None,
-                         ssl_cert_reqs="required"):
+                         ssl_cert_reqs=None):
         """Connect to the Redis server.
 
         Arguments:
@@ -68,8 +68,8 @@ class RedisLibraryKeywords(object):
             - db: Redis keyspace number (default=0)
             - redis_password: password for Redis authentication
             - ssl: Connect Redis with SSL or not (default is False)
-            - ssl_ca_certs: CA Certification when connect Redis with SSL
-            - ssl_cert_reqs: SSL certification requirements (default is required)
+            - ssl_ca_certs: CA Certification when connect Redis with SSL  (default is None)
+            - ssl_cert_reqs: SSL certification requirements (default is None)
 
         Return redis connection object
 

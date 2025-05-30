@@ -1,5 +1,8 @@
 Change Log: `robotframework-redislibrary`
 ================================
+## Version 1.2.9
+**Date:** 30-May-2025
+- set default value for `ssl_cert_reqs` to `None` in `Connect To Redis` keyword
 
 ## Version 1.2.8
 **Date:** 13-Nov-2024
